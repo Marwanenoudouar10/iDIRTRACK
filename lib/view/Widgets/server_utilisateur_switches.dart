@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/view/Widgets/switch.dart';
 
-class SwitchTypes extends StatelessWidget {
-  const SwitchTypes({super.key});
+class SwitchTypes extends StatefulWidget {
+  const SwitchTypes({Key? key}) : super(key: key);
 
   @override
+  _SwitchTypesState createState() => _SwitchTypesState();
+}
+
+class _SwitchTypesState extends State<SwitchTypes> {
+  Color _server1Color = Colors.black;
+  Color _server2Color = Colors.black;
+  Color _server3Color = Colors.black;
+  @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(left: 10),
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
               SwitchState(),
               SizedBox(
@@ -25,17 +34,81 @@ class SwitchTypes extends StatelessWidget {
           Row(
             children: [
               SwitchState(),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
-              Text(
-                'Serveur',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+              GestureDetector(
+                onTap: () {
+                  _showBottomSheet(context);
+                },
+                child: const Text(
+                  'Serveur',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
               ),
             ],
           )
         ],
       ),
+    );
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _server1Color = kButtonColor;
+                  });
+                  // Handle action
+                  Navigator.pop(context);
+                },
+                child: ListTile(
+                  leading: Icon(Icons.photo, color: _server1Color),
+                  title:
+                      Text('SERVER 1', style: TextStyle(color: _server1Color)),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _server2Color = kButtonColor;
+                  });
+                  // Handle action
+                  Navigator.pop(context);
+                },
+                child: ListTile(
+                  leading: Icon(Icons.videocam, color: _server2Color),
+                  title:
+                      Text('SERVER 2', style: TextStyle(color: _server2Color)),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _server3Color = kButtonColor;
+                  });
+                  // Handle action
+                  Navigator.pop(context);
+                },
+                child: ListTile(
+                  leading:
+                      Icon(Icons.room_service_rounded, color: _server3Color),
+                  title:
+                      Text('SERVER 3', style: TextStyle(color: _server3Color)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

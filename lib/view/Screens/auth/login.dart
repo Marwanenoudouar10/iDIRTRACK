@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomizeButton(
                   label: "CONNEXION",
                   onPressed: () {
-                    Navigator.pushNamed(context, '/');
+                    Navigator.pushNamed(context, '/PrincipalePage');
                   },
                   buttonColor: kButtonColor,
                   borderExist: false,
