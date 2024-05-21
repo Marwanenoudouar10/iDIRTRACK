@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:idirtrack/constant.dart';
-import 'package:idirtrack/view/Screens/auth/login.dart';
+import 'package:idirtrack/Screens/login/login.dart';
 
 class SplashScreen extends StatefulWidget {
   // ignore: use_key_in_widget_constructors

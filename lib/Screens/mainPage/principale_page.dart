@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:idirtrack/constant.dart';
-import 'package:idirtrack/view/Widgets/customized_button_principale.dart';
+import 'package:idirtrack/Widgets/customized_button_principale.dart';
+import 'package:idirtrack/models/location.dart';
 
 class PrincipalePage extends StatelessWidget {
-  const PrincipalePage({Key? key}) : super(key: key);
-
+  PrincipalePage({super.key});
+  Location location = Location('admin', 'admin');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +34,12 @@ class PrincipalePage extends StatelessWidget {
             onPressed: () {},
           ),
         ],
-        title: const Text(
-          'Marwane',
-          style: TextStyle(color: Colors.white, fontSize: 16),
+        title: Padding(
+          padding: EdgeInsets.only(right: 30),
+          child: Text(
+            location.username,
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
         ),
         leading: GestureDetector(
           onTap: () {},

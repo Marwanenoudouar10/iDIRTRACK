@@ -6,11 +6,11 @@ class VerticalLine extends StatelessWidget {
   final double strokeWidth;
 
   const VerticalLine({
-    Key? key,
+    super.key,
     required this.height,
     this.color = Colors.black,
     this.strokeWidth = 2,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class VerticalLineList extends StatelessWidget {
 void main() {
   runApp(MaterialApp(
     home: Scaffold(
-      appBar: AppBar(title: Text('Vertical Line List Example')),
+      appBar: AppBar(title: const Text('Vertical Line List Example')),
       body: VerticalLineList(count: 5, height: 100, color: Colors.blue),
     ),
   ));

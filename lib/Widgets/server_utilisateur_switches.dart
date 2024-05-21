@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:idirtrack/constant.dart';
-import 'package:idirtrack/view/Widgets/switch.dart';
+import 'package:idirtrack/Widgets/switch.dart';
 
 class SwitchTypes extends StatefulWidget {
   const SwitchTypes({Key? key}) : super(key: key);
@@ -71,7 +72,11 @@ class _SwitchTypesState extends State<SwitchTypes> {
                   Navigator.pop(context);
                 },
                 child: ListTile(
-                  leading: Icon(Icons.photo, color: _server1Color),
+                  leading: SvgPicture.asset(
+                    'assets/icons/server2.svg',
+                    width: 25,
+                    height: 25,
+                  ),
                   title:
                       Text('SERVER 1', style: TextStyle(color: _server1Color)),
                 ),
@@ -85,7 +90,11 @@ class _SwitchTypesState extends State<SwitchTypes> {
                   Navigator.pop(context);
                 },
                 child: ListTile(
-                  leading: Icon(Icons.videocam, color: _server2Color),
+                  leading: SvgPicture.asset(
+                    'assets/icons/server2.svg',
+                    width: 25,
+                    height: 25,
+                  ),
                   title:
                       Text('SERVER 2', style: TextStyle(color: _server2Color)),
                 ),

@@ -17,7 +17,7 @@ class CustomizedButtonPrincipale extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/LastPosition');
             },
             child: Center(
               child: Column(
