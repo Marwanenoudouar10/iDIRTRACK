@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:idirtrack/models/vihicule.dart';
+import 'package:idirtrack/models/vehicle.dart';
 
 class SmallShip extends StatelessWidget {
   final Vehicle vehicle;

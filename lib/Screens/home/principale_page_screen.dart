@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:idirtrack/Screens/LastPositionScreen/last_position_screen.dart';
+import 'package:idirtrack/Screens/Map/mapTest.dart';
 import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/Widgets/customized_button_principale.dart';
-import 'package:idirtrack/models/location.dart';
 
 class PrincipalePage extends StatelessWidget {
-  PrincipalePage({super.key});
-  Location location = Location('admin', 'admin');
+  final String token;
+  final int userId;
+
+  const PrincipalePage({Key? key, required this.token, required this.userId})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,18 +31,11 @@ class PrincipalePage extends StatelessWidget {
             ),
             onPressed: () {},
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
         ],
-        title: Padding(
+        title: const Padding(
           padding: EdgeInsets.only(right: 30),
           child: Text(
-            location.username,
+            'iDirtrack',
             style: TextStyle(color: Colors.white, fontSize: 16),
           ),
         ),
@@ -57,11 +55,9 @@ class PrincipalePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(
-              child: Container(
-                color: const Color(0xFFD9D9D9),
-              ),
+              child: MapScreen(),
             ),
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
               child: Column(
                 children: [
@@ -70,55 +66,56 @@ class PrincipalePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomizedButtonPrincipale(
-                        icon: Icon(Icons.app_blocking),
+                        icon: const Icon(Icons.app_blocking),
+                        object:
+                            LastPositionScreen(token: token, userId: userId),
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
+                      const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: Icon(Icons.access_alarm),
+                        icon: const Icon(Icons.access_alarm),
+                        object: MapScreen(),
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
+                      const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: Icon(Icons.access_alarms_outlined),
+                        icon: const Icon(Icons.access_alarms_outlined),
+                        object:
+                            LastPositionScreen(token: token, userId: userId),
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
+                      const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: Icon(Icons.app_blocking),
+                        icon: const Icon(Icons.app_blocking),
+                        object:
+                            LastPositionScreen(token: token, userId: userId),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 2,
-                  ),
+                  const SizedBox(height: 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       CustomizedButtonPrincipale(
-                        icon: Icon(Icons.access_alarm),
+                        icon: const Icon(Icons.access_alarm),
+                        object:
+                            LastPositionScreen(token: token, userId: userId),
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
+                      const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: Icon(Icons.zoom_out),
+                        icon: const Icon(Icons.zoom_out),
+                        object:
+                            LastPositionScreen(token: token, userId: userId),
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
+                      const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: Icon(Icons.abc_sharp),
+                        icon: const Icon(Icons.abc_sharp),
+                        object:
+                            LastPositionScreen(token: token, userId: userId),
                       ),
-                      SizedBox(
-                        width: 2,
-                      ),
+                      const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: Icon(Icons.access_alarms),
+                        icon: const Icon(Icons.access_alarms),
+                        object:
+                            LastPositionScreen(token: token, userId: userId),
                       ),
                     ],
                   ),

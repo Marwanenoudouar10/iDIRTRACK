@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class CustomizedButtonPrincipale extends StatelessWidget {
   final Icon icon;
-  const CustomizedButtonPrincipale({super.key, required this.icon});
+  final Object object;
+  const CustomizedButtonPrincipale(
+      {super.key, required this.icon, required this.object});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,8 @@ class CustomizedButtonPrincipale extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/LastPosition');
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => object as Widget));
             },
             child: Center(
               child: Column(
