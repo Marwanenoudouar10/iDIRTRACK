@@ -9,17 +9,32 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? mapController;
+  bool _isPermissionGranted = false;
+  bool _isCheckingPermissions = true;
 
-  Future<void> _requestLocationPermission() async {
-    final status = await Permission.location.request();
+  Future<void> _checkLocationPermission() async {
+    final status = await Permission.location.status;
     if (status.isGranted) {
-      // Permission granted
-      setState(() {});
+      setState(() {
+        _isPermissionGranted = true;
+        _isCheckingPermissions = false;
+      });
     } else if (status.isDenied) {
-      // Permission denied
-      await Permission.location.request();
+      final newStatus = await Permission.location.request();
+      if (newStatus.isGranted) {
+        setState(() {
+          _isPermissionGranted = true;
+          _isCheckingPermissions = false;
+        });
+      } else {
+        setState(() {
+          _isCheckingPermissions = false;
+        });
+      }
     } else if (status.isPermanentlyDenied) {
-      // Permission permanently denied, navigate to settings
+      setState(() {
+        _isCheckingPermissions = false;
+      });
       openAppSettings();
     }
   }
@@ -27,46 +42,38 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    _requestLocationPermission();
+    _checkLocationPermission();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: Permission.location.status,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          final permissionStatus = snapshot.data as PermissionStatus;
-          if (permissionStatus.isGranted) {
-            return GoogleMap(
-              onMapCreated: (GoogleMapController controller) {
-                mapController = controller;
-              },
-              initialCameraPosition: const CameraPosition(
-                target: LatLng(37.7749, -122.4194),
-                zoom: 12.0,
-              ),
-            );
-          } else {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Location permission is denied'),
-                  TextButton(
-                    onPressed: _requestLocationPermission,
-                    child: Text('Request Permission'),
+      body: _isCheckingPermissions
+          ? const Center(child: CircularProgressIndicator())
+          : _isPermissionGranted
+              ? GoogleMap(
+                  onMapCreated: (GoogleMapController controller) {
+                    mapController = controller;
+                  },
+                  initialCameraPosition: const CameraPosition(
+                    target: LatLng(
+                        34.020882, -6.841650), // Centered around Rabat, Morocco
+                    zoom:
+                        5.0, // Reduced zoom level (1.0 = whole world, 20.0 = very zoomed in)
                   ),
-                ],
-              ),
-            );
-          }
-        },
-      ),
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Location permission is denied'),
+                      TextButton(
+                        onPressed: _checkLocationPermission,
+                        child: const Text('Request Permission'),
+                      ),
+                    ],
+                  ),
+                ),
     );
   }
 }

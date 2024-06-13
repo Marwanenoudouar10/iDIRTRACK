@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:idirtrack/Screens/LoginScreen/login.dart';
 
 class AuthService {
   final String apiUrl = 'http://192.168.1.26:8081/api/locations/auth/login';

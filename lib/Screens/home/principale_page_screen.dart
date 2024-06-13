@@ -8,8 +8,7 @@ class PrincipalePage extends StatelessWidget {
   final String token;
   final int userId;
 
-  const PrincipalePage({Key? key, required this.token, required this.userId})
-      : super(key: key);
+  const PrincipalePage({super.key, required this.token, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +17,29 @@ class PrincipalePage extends StatelessWidget {
         backgroundColor: kMainColor,
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.search,
+            icon: Image.asset(
+              'assets/icons/exclamation.png',
               color: Colors.white,
+              width: 25,
+              height: 25,
             ),
             onPressed: () {},
           ),
           IconButton(
-            icon: const Icon(
-              Icons.settings,
+            icon: Image.asset(
+              'assets/icons/map.png',
               color: Colors.white,
+              width: 25,
+              height: 25,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Image.asset(
+              'assets/icons/logout.png',
+              color: Colors.white,
+              width: 25,
+              height: 25,
             ),
             onPressed: () {},
           ),
@@ -36,14 +48,17 @@ class PrincipalePage extends StatelessWidget {
           padding: EdgeInsets.only(right: 30),
           child: Text(
             'iDirtrack',
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            style: TextStyle(color: Colors.white, fontSize: 19),
           ),
         ),
-        leading: GestureDetector(
-          onTap: () {},
-          child: const Icon(
-            Icons.person,
-            color: Colors.white,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: GestureDetector(
+            onTap: () {},
+            child: const Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
           ),
         ),
         elevation: 3.0,
@@ -66,26 +81,30 @@ class PrincipalePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomizedButtonPrincipale(
-                        icon: const Icon(Icons.app_blocking),
+                        imagePath: 'assets/icons/location.png',
                         object:
                             LastPositionScreen(token: token, userId: userId),
+                        pageName: 'Dernière Position',
                       ),
                       const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: const Icon(Icons.access_alarm),
+                        imagePath: 'assets/icons/distance.png',
                         object: MapScreen(),
+                        pageName: 'Historique',
                       ),
                       const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: const Icon(Icons.access_alarms_outlined),
+                        imagePath: 'assets/icons/dashboard.png',
                         object:
                             LastPositionScreen(token: token, userId: userId),
+                        pageName: 'Rapports',
                       ),
                       const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: const Icon(Icons.app_blocking),
+                        imagePath: 'assets/icons/power.png',
                         object:
                             LastPositionScreen(token: token, userId: userId),
+                        pageName: 'Commandes',
                       ),
                     ],
                   ),
@@ -95,27 +114,31 @@ class PrincipalePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       CustomizedButtonPrincipale(
-                        icon: const Icon(Icons.access_alarm),
+                        imagePath: 'assets/icons/maint.png',
                         object:
                             LastPositionScreen(token: token, userId: userId),
+                        pageName: 'Maintenance',
                       ),
                       const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: const Icon(Icons.zoom_out),
+                        imagePath: 'assets/icons/card.png',
                         object:
                             LastPositionScreen(token: token, userId: userId),
+                        pageName: 'Abonnements',
                       ),
                       const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: const Icon(Icons.abc_sharp),
+                        imagePath: 'assets/icons/bell.png',
                         object:
                             LastPositionScreen(token: token, userId: userId),
+                        pageName: 'Notifications',
                       ),
                       const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
-                        icon: const Icon(Icons.access_alarms),
+                        imagePath: 'assets/icons/settings.png',
                         object:
                             LastPositionScreen(token: token, userId: userId),
+                        pageName: 'Paramètres',
                       ),
                     ],
                   ),

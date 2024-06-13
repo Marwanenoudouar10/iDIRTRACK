@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:idirtrack/Screens/LastPositionScreen/last_position_screen.dart';
 import 'package:idirtrack/Screens/presentation/splash_screen.dart';
 import 'package:idirtrack/providers/sing_in_provider.dart';
 import 'package:provider/provider.dart';

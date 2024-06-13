@@ -35,8 +35,7 @@ class LastPositionScreen extends StatelessWidget {
                     print("No vehicles available"); // Debug print
                     return const Center(child: Text('No vehicles available'));
                   }
-                  print(
-                      "Displaying vehicles: ${provider.filteredVehicles}"); // Debug print
+                  print("Displaying vehicles: ${provider.filteredVehicles}");
                   return ListView.builder(
                     itemCount: provider.filteredVehicles.length,
                     itemBuilder: (context, index) {

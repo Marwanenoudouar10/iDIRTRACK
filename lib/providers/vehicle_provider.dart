@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:idirtrack/configs/api_service.dart';
 import 'package:idirtrack/models/vehicle.dart';
 
 class VehicleProvider with ChangeNotifier {
   List<Vehicle> _filteredVehicles = [];
+  // ignore: unused_field
   String _searchQuery = '';
   List<Vehicle> _vehicles = [];
   String _token = "";
