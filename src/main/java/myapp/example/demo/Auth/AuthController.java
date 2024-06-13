@@ -2,6 +2,7 @@ package myapp.example.demo.Auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,7 @@ public class AuthController {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @SuppressWarnings("unused")
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -35,7 +37,6 @@ public class AuthController {
     @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
     try {
-        // Authenticate user
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 userDetails.getUsername(), authRequest.getPassword());
@@ -49,19 +50,25 @@ public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
 
         // Create response payload with token and user ID
         AuthResponse authResponse = new AuthResponse(jwt, userId);
-
         return ResponseEntity.ok(authResponse);
+
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
     }
 }
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthRequest authRequest) {
-        try {
-            locationService.registerUser(authRequest.getUsername(), authRequest.getPassword());
-            return ResponseEntity.ok("User registered successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User registration failed");
-        }
+@PostMapping("/register")
+public ResponseEntity<?> register(@RequestBody AuthRequest authRequest) {
+    String username = authRequest.getUsername();
+    if (locationService.getUserIdByUsername(username) != null) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists. Please choose a different username.");
     }
+
+    try {
+        String encodedPassword = passwordEncoder.encode(authRequest.getPassword());
+        locationService.registerUser(username, encodedPassword);
+        return ResponseEntity.ok("User registered successfully");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User registration failed");
+    }
+}
 }

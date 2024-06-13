@@ -18,6 +18,12 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
     
+    @GetMapping("/{locationId}")
+    public ResponseEntity<Location> getLocationById(@PathVariable Long locationId) {
+        Location location = locationService.getLocationById(locationId);
+        return ResponseEntity.ok(location);
+    }
+    
     @GetMapping
     public List<Location> getAllLocations() {
         return locationService.getAllLocations();

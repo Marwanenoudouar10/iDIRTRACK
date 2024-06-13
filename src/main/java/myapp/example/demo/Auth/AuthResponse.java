@@ -1,7 +1,5 @@
 package myapp.example.demo.Auth;
 
-import lombok.extern.java.Log;
-
 public class AuthResponse {
     private String jwt;
     private Long userId;

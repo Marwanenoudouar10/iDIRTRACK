@@ -2,10 +2,13 @@ package myapp.example.demo.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -22,9 +25,15 @@ public class Location {
     private String password;
     private String username;
 
+    @JsonIgnore
     public List<Vehicle> getCars() {
         return myCars;
     }
+
+    public void setCars(List<Vehicle> cars) {
+        this.myCars = cars;
+    }
+
     public String getUsername() {
         return username;
     }

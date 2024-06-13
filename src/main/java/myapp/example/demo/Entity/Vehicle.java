@@ -25,6 +25,7 @@ public class Vehicle {
     private String availability;
 
     @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
     @JsonBackReference
     private Location locationEntity;
 

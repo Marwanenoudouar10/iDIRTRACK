@@ -22,6 +22,11 @@ public class LocationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public Location getLocationById(Long locationId) {
+        return locationRepository.findById(locationId)
+                .orElseThrow(() -> new RuntimeException("Location not found"));
+    }
+
     public boolean authenticate(String username, String password) {
         Location location = locationRepository.findByUsername(username);
         if (location != null && passwordEncoder.matches(password, location.getPassword())) {
@@ -51,18 +56,16 @@ public class LocationService {
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new RuntimeException("Location not found"));
         vehicle.setLocationEntity(location);
-        location.getCars().add(vehicle);
         vehicleRepository.save(vehicle);
+        location.getCars().add(vehicle);
         return locationRepository.save(location);
     }
     
     public void deleteLocation(Long locationId) {
         Location location = locationRepository.findById(locationId)
                 .orElseThrow();
-
-        // Optional: Delete associated entities (e.g., vehicles)
-        location.getCars().clear(); // This removes references from the Location object
-        vehicleRepository.deleteAllByLocation(location); // Deletes vehicles with matching location (optional)
+        location.getCars().clear(); 
+        vehicleRepository.deleteAllByLocation(location);
 
         locationRepository.delete(location);
     }
