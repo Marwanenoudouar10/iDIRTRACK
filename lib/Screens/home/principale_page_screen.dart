@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:idirtrack/Screens/LastPositionScreen/last_position_screen.dart';
+import 'package:idirtrack/Screens/MaintenanceScreen/maintenance_screen.dart';
 import 'package:idirtrack/Screens/Map/mapTest.dart';
+import 'package:idirtrack/Widgets/side_list.dart';
 import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/Widgets/customized_button_principale.dart';
 
@@ -63,6 +65,7 @@ class PrincipalePage extends StatelessWidget {
         ),
         elevation: 3.0,
       ),
+      drawer: const SideListWidget(),
       body: Container(
         width: double.infinity,
         color: const Color(0xFFD9D9D9),
@@ -70,7 +73,7 @@ class PrincipalePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Expanded(
-              child: MapScreen(),
+              child: MyMap(),
             ),
             SizedBox(
               width: double.infinity,
@@ -89,7 +92,7 @@ class PrincipalePage extends StatelessWidget {
                       const SizedBox(width: 2),
                       CustomizedButtonPrincipale(
                         imagePath: 'assets/icons/distance.png',
-                        object: MapScreen(),
+                        object: MyMap(),
                         pageName: 'Historique',
                       ),
                       const SizedBox(width: 2),
@@ -113,10 +116,9 @@ class PrincipalePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      CustomizedButtonPrincipale(
+                      const CustomizedButtonPrincipale(
                         imagePath: 'assets/icons/maint.png',
-                        object:
-                            LastPositionScreen(token: token, userId: userId),
+                        object: MaintenanceScreen(),
                         pageName: 'Maintenance',
                       ),
                       const SizedBox(width: 2),

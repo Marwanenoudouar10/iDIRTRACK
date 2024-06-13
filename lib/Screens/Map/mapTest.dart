@@ -1,79 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:idirtrack/configs/Maps/api_maps_places.dart'; // Assuming this is the file path
 
-class MapScreen extends StatefulWidget {
+class MyMap extends StatefulWidget {
   @override
-  _MapScreenState createState() => _MapScreenState();
+  _MyMapState createState() => _MyMapState();
 }
 
-class _MapScreenState extends State<MapScreen> {
-  GoogleMapController? mapController;
-  bool _isPermissionGranted = false;
-  bool _isCheckingPermissions = true;
-
-  Future<void> _checkLocationPermission() async {
-    final status = await Permission.location.status;
-    if (status.isGranted) {
-      setState(() {
-        _isPermissionGranted = true;
-        _isCheckingPermissions = false;
-      });
-    } else if (status.isDenied) {
-      final newStatus = await Permission.location.request();
-      if (newStatus.isGranted) {
-        setState(() {
-          _isPermissionGranted = true;
-          _isCheckingPermissions = false;
-        });
-      } else {
-        setState(() {
-          _isCheckingPermissions = false;
-        });
-      }
-    } else if (status.isPermanentlyDenied) {
-      setState(() {
-        _isCheckingPermissions = false;
-      });
-      openAppSettings();
-    }
-  }
+class _MyMapState extends State<MyMap> {
+  final Set<Polyline> _polylines = {};
+  final LatLng _startLocation = const LatLng(31.791702, -7.603403); // Morocco
+  final LatLng _endLocation = const LatLng(34.025373, -6.802417);
 
   @override
   void initState() {
     super.initState();
-    _checkLocationPermission();
+    _createPolyline();
+  }
+
+  void _createPolyline() async {
+    final ApiMapsPlaces apiMapsPlaces = ApiMapsPlaces(); // Create an instance
+    final List<LatLng> points =
+        await apiMapsPlaces.getRouteCoordinates(_startLocation, _endLocation);
+    if (points.isNotEmpty) {
+      final Polyline polyline = Polyline(
+        polylineId: const PolylineId('polyline_id'),
+        points: points,
+        color: Colors.blue,
+        width: 3,
+      );
+      setState(() {
+        _polylines.add(polyline);
+      });
+    } else {
+      print('Failed to fetch route coordinates or API error.');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isCheckingPermissions
-          ? const Center(child: CircularProgressIndicator())
-          : _isPermissionGranted
-              ? GoogleMap(
-                  onMapCreated: (GoogleMapController controller) {
-                    mapController = controller;
-                  },
-                  initialCameraPosition: const CameraPosition(
-                    target: LatLng(
-                        34.020882, -6.841650), // Centered around Rabat, Morocco
-                    zoom:
-                        5.0, // Reduced zoom level (1.0 = whole world, 20.0 = very zoomed in)
-                  ),
-                )
-              : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Location permission is denied'),
-                      TextButton(
-                        onPressed: _checkLocationPermission,
-                        child: const Text('Request Permission'),
-                      ),
-                    ],
-                  ),
-                ),
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: _startLocation,
+              zoom: 10,
+            ),
+            mapType: MapType.normal,
+            polylines: _polylines,
+          ),
+        ],
+      ),
     );
   }
 }

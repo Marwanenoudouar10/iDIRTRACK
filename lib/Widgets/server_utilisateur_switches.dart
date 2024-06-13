@@ -34,7 +34,7 @@ class _SwitchTypesState extends State<SwitchTypes> {
           ),
           Row(
             children: [
-              SwitchState(),
+              const SwitchState(),
               const SizedBox(
                 width: 8,
               ),

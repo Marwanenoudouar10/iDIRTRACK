@@ -24,7 +24,7 @@ class SignInProvider with ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
       if (_password == "admin" && _username == "admin") {
       } else {
         _errorMessage = "Wrong password or username";

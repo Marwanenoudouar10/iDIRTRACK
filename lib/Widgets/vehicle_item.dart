@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:idirtrack/models/vehicle.dart';
 
 class VehicleItem extends StatelessWidget {
-  final Vehicle vehicle;
+  final Map<String, dynamic> vehicle;
 
   const VehicleItem({super.key, required this.vehicle});
 
@@ -54,7 +53,7 @@ class VehicleItem extends StatelessWidget {
                         color: const Color.fromARGB(255, 179, 178, 178),
                         borderRadius: BorderRadius.circular(0),
                       ),
-                      child: Center(child: Text(vehicle.delay)),
+                      child: Center(child: Text(vehicle['delay'])),
                     ),
                   ),
                 ],
@@ -64,7 +63,7 @@ class VehicleItem extends StatelessWidget {
                 children: [
                   Center(
                     child: Text(
-                      vehicle.name,
+                      vehicle['name'],
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20),
                     ),
@@ -72,12 +71,12 @@ class VehicleItem extends StatelessWidget {
                   const SizedBox(height: 0),
                   Padding(
                     padding: const EdgeInsets.only(left: 11.0),
-                    child: Text(vehicle.date),
+                    child: Text(vehicle['date']),
                   ),
                   const SizedBox(height: 0),
                   Padding(
                     padding: const EdgeInsets.only(right: 20.0),
-                    child: Text(vehicle.location),
+                    child: Text(vehicle['location']),
                   ),
                   const SizedBox(height: 0),
                   Padding(
@@ -85,12 +84,12 @@ class VehicleItem extends StatelessWidget {
                     child: Container(
                       width: 75,
                       decoration: BoxDecoration(
-                        color: vehicle.availability == 'En retard'
+                        color: vehicle['availability'] == 'En retard'
                             ? Colors.red
                             : const Color(0xFF2FD56F),
                         borderRadius: BorderRadius.circular(0),
                       ),
-                      child: Center(child: Text(vehicle.availability)),
+                      child: Center(child: Text(vehicle['availability'])),
                     ),
                   ),
                 ],
@@ -102,18 +101,18 @@ class VehicleItem extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 30),
                     child: Container(
                       width: 77,
-                      height: 25,
+                      height: 20,
                       decoration: BoxDecoration(
-                        color: vehicle.status == 'En marche'
+                        color: vehicle['status'] == 'En marche'
                             ? const Color(0xFF2FD56F)
                             : Colors.red,
                         borderRadius: BorderRadius.circular(0),
                       ),
-                      child: Center(child: Text(vehicle.status)),
+                      child: Center(child: Text(vehicle['status'])),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30),
+                    padding: const EdgeInsets.only(left: 0),
                     child: Container(
                       width: 50,
                       height: 25,
@@ -123,7 +122,7 @@ class VehicleItem extends StatelessWidget {
                       ),
                       child: Center(
                           child: Text(
-                        vehicle.battery,
+                        vehicle['battery'],
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white),
                       )),
