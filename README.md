@@ -27,6 +27,8 @@ Car Tracking App is a mobile application developed with Flutter that allows user
 ![Splash Screen](screenshots/splash_screen.png)
 *Splash Screen: Displays the app logo and initializes the app.*
 
+![Splash Screen](screenshots/principle_screen.png)
+*Principle Screen: Shows all availble pages for the user.*
 ## Usage
 
 1. **Sign Up/Login**: Users need to sign up or log in to the app to access the tracking functionalities.
