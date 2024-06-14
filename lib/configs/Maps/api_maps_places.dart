@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:idirtrack/constant.dart';
 
@@ -13,7 +14,9 @@ class ApiMapsPlaces {
     final String url =
         'https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}&destination=${destination.latitude},${destination.longitude}&mode=driving&key=$apiKey';
     final response = await http.get(Uri.parse(url));
-    print("Not yet");
+    if (kDebugMode) {
+      print("Not yet");
+    }
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       final List<LatLng> points = [];
@@ -21,11 +24,15 @@ class ApiMapsPlaces {
       for (var step in steps) {
         final encodedPoints = step['polyline']['points'];
         points.addAll(_decodePolyLine(encodedPoints));
-        print("Secces");
+        if (kDebugMode) {
+          print("Secces");
+        }
       }
       return points;
     } else {
-      print("Error in Api place maps");
+      if (kDebugMode) {
+        print("Error in Api place maps");
+      }
       return [];
     }
   }

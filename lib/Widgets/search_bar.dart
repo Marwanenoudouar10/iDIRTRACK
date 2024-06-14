@@ -3,6 +3,8 @@ import 'package:idirtrack/providers/vehicle_provider.dart';
 import 'package:provider/provider.dart';
 
 class SearchBarWidget extends StatelessWidget {
+  const SearchBarWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(

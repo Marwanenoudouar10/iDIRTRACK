@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:idirtrack/Screens/LastPositionScreen/last_position_screen.dart';
 import 'package:idirtrack/Screens/home/principale_page_screen.dart';
 import 'package:idirtrack/configs/auth_service.dart';
 import 'package:idirtrack/constant.dart';
@@ -8,9 +8,10 @@ import 'package:idirtrack/Widgets/server_utilisateur_switches.dart';
 import 'package:idirtrack/Widgets/vertical_line.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -22,23 +23,16 @@ class _LoginScreenState extends State<LoginScreen> {
       TextEditingController();
   static final TextEditingController passwordController =
       TextEditingController();
-  AuthService _authService = AuthService();
-
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
+        usernameController.clear();
+        passwordController.clear();
         _isVisible = true;
       });
     });
-  }
-
-  @override
-  void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
-    super.dispose();
   }
 
   @override
@@ -137,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         final token = authData['token']!;
                         final userId = authData['userId']!;
                         Navigator.push(
+                          // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
@@ -150,7 +145,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       }
                     } catch (e) {
-                      print('Failed to authenticate: $e');
+                      if (kDebugMode) {
+                        print('Failed to authenticate: $e');
+                      }
                     }
                   },
                   buttonColor: kButtonColor,

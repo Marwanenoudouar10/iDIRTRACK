@@ -4,9 +4,10 @@ import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/Widgets/switch.dart';
 
 class SwitchTypes extends StatefulWidget {
-  const SwitchTypes({Key? key}) : super(key: key);
+  const SwitchTypes({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SwitchTypesState createState() => _SwitchTypesState();
 }
 

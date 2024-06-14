@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 class VehicleProvider with ChangeNotifier {
   List<Map<String, dynamic>> _filteredVehicles = [];
   List<Map<String, dynamic>> _vehicles = [];
+  // ignore: unused_field
   String _searchQuery = '';
   String _token = "";
   int _userId = 2;
@@ -19,6 +20,7 @@ class VehicleProvider with ChangeNotifier {
   List<Map<String, dynamic>> get filteredVehicles => _filteredVehicles;
 
   Future<void> fetchVehicles() async {
+    // ignore: unnecessary_null_comparison
     if (_token == null || _userId == null) return;
 
     final response = await http.get(

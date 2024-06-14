@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:idirtrack/Screens/LoginScreen/login.dart';
 import 'package:idirtrack/Screens/presentation/splash_screen.dart';
 import 'package:idirtrack/providers/sing_in_provider.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const SplashScreen(),
+          '/LoginScreen': (context) => const LoginScreen(),
         });
   }
 }

@@ -1,9 +1,14 @@
+// ignore: file_names
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:idirtrack/configs/Maps/api_maps_places.dart'; // Assuming this is the file path
 
 class MyMap extends StatefulWidget {
+  const MyMap({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MyMapState createState() => _MyMapState();
 }
 
@@ -33,7 +38,9 @@ class _MyMapState extends State<MyMap> {
         _polylines.add(polyline);
       });
     } else {
-      print('Failed to fetch route coordinates or API error.');
+      if (kDebugMode) {
+        print('Failed to fetch route coordinates or API error.');
+      }
     }
   }
 

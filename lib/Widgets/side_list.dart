@@ -27,7 +27,7 @@ class SideListWidget extends StatelessWidget {
                   child: Center(
                     child: ClipOval(
                       child: Image.asset(
-                        'assets/images/logo3.png',
+                        'assets/images/profile.png',
                         width: 70.0, // Set the width of the image
                         height: 70.0, // Set the height of the image
                         fit: BoxFit
