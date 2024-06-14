@@ -2,8 +2,6 @@ package myapp.example.demo.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import java.util.LinkedList;
 import java.util.List;
 

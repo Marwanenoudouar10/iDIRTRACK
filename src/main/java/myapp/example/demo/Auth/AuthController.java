@@ -2,15 +2,18 @@ package myapp.example.demo.Auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import myapp.example.demo.Utils.JwtUtil;
 import myapp.example.demo.services.LocationService;
 
@@ -71,4 +74,9 @@ public ResponseEntity<?> register(@RequestBody AuthRequest authRequest) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User registration failed");
     }
 }
+ @PostMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+    }
 }
