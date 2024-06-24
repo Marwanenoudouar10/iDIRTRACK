@@ -1,9 +1,10 @@
 package myapp.example.demo.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,7 +17,11 @@ public class Vehicle {
     private String make;
     private String model;
     private String name;
-    private String date;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date date;
+
     private String location;
     private String status;
     private String battery;
@@ -29,7 +34,6 @@ public class Vehicle {
     @JsonBackReference
     private Location locationEntity;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -62,11 +66,11 @@ public class Vehicle {
         this.model = model;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

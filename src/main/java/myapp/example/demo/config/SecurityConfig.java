@@ -26,8 +26,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/locations/auth/login").permitAll() // Permit login endpoint
-                    .requestMatchers("/api/locations/**").authenticated())
+                    .requestMatchers("/api/locations/auth/login").permitAll()
+                    .requestMatchers("/api/documents/locations/{locationId}/vehicles/{vehicleId}").permitAll() // Permit login endpoint
+                    .requestMatchers("/api/locations/**").permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
