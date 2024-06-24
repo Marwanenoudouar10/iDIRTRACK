@@ -9,7 +9,7 @@ class CircleIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RawMaterialButton(
       onPressed: onPressed,
-      elevation: 2.0, // Add some shadow effect (optional)
+      elevation: 2.0,
       fillColor: kIconColor,
       shape: const CircleBorder(),
       padding: const EdgeInsets.all(15.0), // Adjust padding as needed

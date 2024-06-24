@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/models/location.dart';
 import 'package:idirtrack/models/vehicle.dart';
 
 class ApiService {
-  final String baseUrl = "http://192.168.1.26:8081/api";
-
+  final String baseUrl = "http://$kIpAddress:8081/api";
   Future<List<Location>> fetchLocations() async {
     final response = await http.get(Uri.parse('$baseUrl/locations'));
     if (response.statusCode == 200) {

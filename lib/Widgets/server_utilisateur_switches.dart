@@ -15,6 +15,7 @@ class _SwitchTypesState extends State<SwitchTypes> {
   Color _server1Color = Colors.black;
   Color _server2Color = Colors.black;
   Color _server3Color = Colors.black;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -63,62 +64,62 @@ class _SwitchTypesState extends State<SwitchTypes> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _server1Color = kButtonColor;
-                  });
-                  // Handle action
-                  Navigator.pop(context);
-                },
-                child: ListTile(
-                  leading: SvgPicture.asset(
-                    'assets/icons/server2.svg',
-                    width: 25,
-                    height: 25,
-                  ),
-                  title:
-                      Text('SERVER 1', style: TextStyle(color: _server1Color)),
-                ),
+            children: [
+              _buildListTile(
+                context,
+                'SERVER 1',
+                'assets/icons/server2.svg',
+                _server1Color,
+                () => _updateServerColor(1),
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _server2Color = kButtonColor;
-                  });
-                  // Handle action
-                  Navigator.pop(context);
-                },
-                child: ListTile(
-                  leading: SvgPicture.asset(
-                    'assets/icons/server2.svg',
-                    width: 25,
-                    height: 25,
-                  ),
-                  title:
-                      Text('SERVER 2', style: TextStyle(color: _server2Color)),
-                ),
+              _buildListTile(
+                context,
+                'SERVER 2',
+                'assets/icons/server2.svg',
+                _server2Color,
+                () => _updateServerColor(2),
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _server3Color = kButtonColor;
-                  });
-                  // Handle action
-                  Navigator.pop(context);
-                },
-                child: ListTile(
-                  leading:
-                      Icon(Icons.room_service_rounded, color: _server3Color),
-                  title:
-                      Text('SERVER 3', style: TextStyle(color: _server3Color)),
-                ),
+              _buildListTile(
+                context,
+                'SERVER 3',
+                null,
+                _server3Color,
+                () => _updateServerColor(3),
+                icon: const Icon(Icons.room_service_rounded),
               ),
             ],
           ),
         );
       },
     );
+  }
+
+  Widget _buildListTile(BuildContext context, String title, String? assetPath,
+      Color color, VoidCallback onTap,
+      {Widget? icon}) {
+    return GestureDetector(
+      onTap: () {
+        onTap();
+        Navigator.pop(context);
+      },
+      child: ListTile(
+        leading: assetPath != null
+            ? SvgPicture.asset(
+                assetPath,
+                width: 25,
+                height: 25,
+              )
+            : icon,
+        title: Text(title, style: TextStyle(color: color)),
+      ),
+    );
+  }
+
+  void _updateServerColor(int serverNumber) {
+    setState(() {
+      _server1Color = serverNumber == 1 ? kButtonColor : Colors.black;
+      _server2Color = serverNumber == 2 ? kButtonColor : Colors.black;
+      _server3Color = serverNumber == 3 ? kButtonColor : Colors.black;
+    });
   }
 }

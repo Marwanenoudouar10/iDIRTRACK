@@ -28,7 +28,6 @@ class _LoadingWidgetState extends State<LoadingWidget> {
       setState(() {
         _isLoading = false;
       });
-      // Navigate to login screen after loading
       Navigator.pushNamed(context, widget.loginRoute);
     });
   }

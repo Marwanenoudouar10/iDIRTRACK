@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class LogoutConfirmationDialog extends StatelessWidget {
   final Function onLogoutConfirmed;
 
-  const LogoutConfirmationDialog({Key? key, required this.onLogoutConfirmed})
-      : super(key: key);
+  const LogoutConfirmationDialog({super.key, required this.onLogoutConfirmed});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class LogoutConfirmationDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context, true); // Pass true to indicate confirmation
+            Navigator.pop(context, true);
           },
           child: const Text('Oui'),
         ),

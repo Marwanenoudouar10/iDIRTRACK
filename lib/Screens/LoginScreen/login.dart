@@ -1,11 +1,16 @@
+// main.dart
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:idirtrack/Screens/home/principale_page_screen.dart';
-import 'package:idirtrack/configs/auth_service.dart';
-import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/Widgets/button_widget.dart';
 import 'package:idirtrack/Widgets/server_utilisateur_switches.dart';
 import 'package:idirtrack/Widgets/vertical_line.dart';
+import 'package:idirtrack/configs/auth_service.dart';
+import 'package:idirtrack/constant.dart';
+import 'package:idirtrack/global/global_state.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,20 +24,26 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isVisible = false;
   bool _obscureText = true;
   bool _hasError = false;
-  static final TextEditingController usernameController =
-      TextEditingController();
-  static final TextEditingController passwordController =
-      TextEditingController();
+  late TextEditingController usernameController;
+  late TextEditingController passwordController;
+
   @override
   void initState() {
     super.initState();
+    usernameController = TextEditingController();
+    passwordController = TextEditingController();
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        usernameController.clear();
-        passwordController.clear();
         _isVisible = true;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,7 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 50),
-                const Image(image: AssetImage('assets/images/Logo3.png')),
+                const Image(
+                  image: AssetImage('assets/images/Logo3.png'),
+                  height: 170,
+                  width: 170,
+                ),
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -59,10 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       filled: true,
                       labelText: "NOM D'UTILISATEUR",
                       labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon: const Icon(
-                        Icons.person,
-                        color: kIconColor,
-                      ),
+                      prefixIcon: const Icon(Icons.person, color: kIconColor),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(3.0),
                       ),
@@ -87,14 +99,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       fillColor: kInputsColor,
                       labelText: "MOT DE PASS",
                       labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        color: kIconColor,
-                      ),
+                      prefixIcon: const Icon(Icons.lock, color: kIconColor),
                       suffixIcon: IconButton(
-                        icon: Icon(_obscureText
-                            ? Icons.visibility_off
-                            : Icons.visibility),
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                         color: kIconColor,
                         onPressed: () {
                           setState(() {
@@ -130,16 +141,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           authData.containsKey('userId')) {
                         final token = authData['token']!;
                         final userId = authData['userId']!;
+
+                        Provider.of<GlobalState>(context, listen: false)
+                            .setToken(token);
+                        Provider.of<GlobalState>(context, listen: false)
+                            .setUserId(userId);
+
+                        if (!mounted) return;
                         Navigator.push(
-                          // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
                                 PrincipalePage(token: token, userId: userId),
                           ),
                         );
-                      }
-                      {
+                      } else {
                         setState(() {
                           _hasError = true;
                         });
@@ -148,12 +164,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (kDebugMode) {
                         print('Failed to authenticate: $e');
                       }
+                      setState(() {
+                        _hasError = true;
+                      });
                     }
                   },
                   buttonColor: kButtonColor,
                   borderExist: false,
                 ),
-                if (_hasError) // Display error message if there is an error
+                if (_hasError)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(

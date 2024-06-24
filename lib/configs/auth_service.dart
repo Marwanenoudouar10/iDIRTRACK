@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:idirtrack/constant.dart';
 
 class AuthService {
-  final String apiUrl = 'http://192.168.1.26:8081/api/locations/auth/login';
+  final String apiUrl = 'http://$kIpAddress:8081/api/locations/auth/login';
 
   Future<Map<String, dynamic>> authenticate(
       String username, String password) async {

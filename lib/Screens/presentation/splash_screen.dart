@@ -1,12 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/Screens/LoginScreen/login.dart';
 
 class SplashScreen extends StatefulWidget {
-  // ignore: use_key_in_widget_constructors
-  const SplashScreen({Key? key});
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -14,24 +12,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool isConnected = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Simulate connection status check
-    Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        isConnected = true;
-      });
-      // Redirect to LoginScreen after connection status check
-      Future.delayed(const Duration(seconds: 4), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +23,17 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AnimatedOpacity(
-              duration: const Duration(microseconds: 200),
+              duration: const Duration(seconds: 1),
               opacity: isConnected ? 1.0 : 0.0,
               child: const Image(
+                height: 165,
+                width: 165,
                 image: AssetImage('assets/images/Logo3.png'),
               ),
             ),
             const SizedBox(height: 20),
             AnimatedOpacity(
-              duration: const Duration(seconds: 1),
+              duration: const Duration(microseconds: 300),
               opacity: isConnected ? 1.0 : 0.0,
               child: const Text(
                 'iDIRTRACK',
@@ -70,5 +52,21 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Simulate connection status check and redirect to LoginScreen
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        isConnected = true;
+      });
+    }).then((_) => Future.delayed(const Duration(seconds: 3), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        }));
   }
 }
