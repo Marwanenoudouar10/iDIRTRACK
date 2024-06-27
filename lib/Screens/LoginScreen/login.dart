@@ -100,6 +100,7 @@ class LoginScreen extends StatelessWidget {
                   onPressed: () async {
                     final location = await loginProvider.authenticate(context);
                     if (location != null) {
+                      // ignore: use_build_context_synchronously
                       Provider.of<GlobalState>(context, listen: false)
                           .setLocation(location);
 

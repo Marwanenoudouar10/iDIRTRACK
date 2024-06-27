@@ -16,6 +16,7 @@ Future<void> showPickerDialog(
               onTap: () async {
                 File? image = await pickImage();
                 onImagePicked(image!);
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop();
               },
             ),
@@ -25,6 +26,7 @@ Future<void> showPickerDialog(
               onTap: () async {
                 File? image = await pickImage();
                 onImagePicked(image!);
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop();
               },
             ),

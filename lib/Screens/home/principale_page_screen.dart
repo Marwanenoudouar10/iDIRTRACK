@@ -15,6 +15,7 @@ class PrincipalePage extends StatefulWidget {
   const PrincipalePage({super.key, required this.location});
 
   @override
+  // ignore: library_private_types_in_public_api
   _PrincipalePageState createState() => _PrincipalePageState();
 }
 
@@ -31,13 +32,15 @@ class _PrincipalePageState extends State<PrincipalePage> {
     if (confirmed == true) {
       if (!mounted) return;
       Navigator.pushNamedAndRemoveUntil(
-          context, '/LoginScreen', (Route<dynamic> route) => false);
+          // ignore: use_build_context_synchronously
+          context,
+          '/LoginScreen',
+          (Route<dynamic> route) => false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('Loction id : ${widget.location.id}');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kMainColor,

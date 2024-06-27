@@ -91,6 +91,7 @@ class DocumentProvider with ChangeNotifier {
       var response = await request.send();
 
       if (response.statusCode == 201) {
+        // ignore: use_build_context_synchronously
         showReviewMessage(context);
       } else {
         _errorMessage = 'Failed to upload documents';
@@ -174,6 +175,7 @@ class DocumentProvider with ChangeNotifier {
                   if (image != null) {
                     onImagePicked(image);
                   }
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 },
               ),
@@ -185,6 +187,7 @@ class DocumentProvider with ChangeNotifier {
                   if (image != null) {
                     onImagePicked(image);
                   }
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 },
               ),

@@ -56,25 +56,6 @@ Widget _buildVehicleImage() {
   );
 }
 
-Widget _buildVehicleInfo(Vehicle vehicle) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
-        child: Text(
-          vehicle.name,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0),
-        ),
-      ),
-      Text(
-        vehicle.date,
-        style: const TextStyle(fontSize: 12.0, color: Colors.grey),
-      ),
-    ],
-  );
-}
-
 Widget _buildVehicleStatus(Vehicle vehicle) {
   return Column(
     children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:idirtrack/Widgets/container_widget.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 Widget buildSubscriptionCard({

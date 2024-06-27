@@ -1,12 +1,14 @@
+// ignore: file_names
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:idirtrack/configs/Maps/api_maps_places.dart'; // Ensure this path is correct
+import 'package:idirtrack/configs/Maps/api_maps_places.dart';
 
 class MyMap extends StatefulWidget {
   const MyMap({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MyMapState createState() => _MyMapState();
 }
 
