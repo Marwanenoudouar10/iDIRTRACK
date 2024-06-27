@@ -1,32 +1,33 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:idirtrack/constant.dart';
+// import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'package:idirtrack/constant.dart';
 
-class AuthService {
-  final String apiUrl = 'http://$kIpAddress:8081/api/locations/auth/login';
+// class AuthService {
+//   final String apiUrl = 'http://$kIpAddress:8081/api/locations/auth/login';
 
-  Future<Map<String, dynamic>> authenticate(
-      String username, String password) async {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'password': password,
-      }),
-    );
+//   Future<Map<String, dynamic>> authenticate(
+//       String username, String password) async {
+//     final response = await http.post(
+//       Uri.parse(apiUrl),
+//       headers: <String, String>{
+//         'Content-Type': 'application/json; charset=UTF-8',
+//       },
+//       body: jsonEncode(<String, String>{
+//         'username': username,
+//         'password': password,
+//       }),
+//     );
 
-    if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
-      final token = responseData['jwt']; // Use 'jwt' instead of 'token'
-      final userId = responseData['userId'];
-      return {'token': token, 'userId': userId};
-    } else {
-      throw Exception('Failed to authenticate');
-    }
-  }
+//     if (response.statusCode == 200) {
+//       final responseData = jsonDecode(response.body);
+//       final token = responseData['jwt']; // Use 'jwt' instead of 'token'
+//       return {
+//         'token': token,
+//       };
+//     } else {
+//       throw Exception('Failed to authenticate');
+//     }
+//   }
 
   // Future<String> loginUser(String username, String password) async {
   //   final apiUrl =
@@ -67,4 +68,4 @@ class AuthService {
   //   }
   //   return null;
   // }
-}
+//}

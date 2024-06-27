@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:idirtrack/Widgets/search_bar_widget.dart';
 import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/providers/vehicle_provider.dart';
-import 'package:idirtrack/widgets/search_bar.dart';
 import 'package:provider/provider.dart';
 
 class CustomizedAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -47,7 +47,7 @@ class CustomizedAppbar extends StatelessWidget implements PreferredSizeWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      '${VehicleProvider.totalVehicleCount} Véhicules',
+                      '${vehicleProvider.totalVehicleCount} Véhicules',
                       style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
@@ -60,7 +60,7 @@ class CustomizedAppbar extends StatelessWidget implements PreferredSizeWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 14.0),
-                child: SearchBarWidget(
+                child: buildSearchBarWidget(
                   onSearch: (query) {
                     Provider.of<VehicleProvider>(context, listen: false)
                         .searchVehicles(query);

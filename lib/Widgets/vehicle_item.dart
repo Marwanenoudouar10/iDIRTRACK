@@ -1,178 +1,110 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:idirtrack/global/global_state.dart';
+import 'package:idirtrack/Widgets/container_widget.dart';
+import 'package:idirtrack/models/vehicle.dart';
 
-class VehicleItem extends StatelessWidget {
-  final Map<String, dynamic> vehicle;
-  final Widget object;
-  const VehicleItem({super.key, required this.vehicle, required this.object});
-
-  @override
-  Widget build(BuildContext context) {
-    Provider.of<GlobalState>(context, listen: false)
-        .setVehicleId(vehicle['id']);
-    return GestureDetector(
+Widget buildVehicleItem(Vehicle vehicle, Widget object, BuildContext context) {
+  return Card(
+    child: ListTile(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => object),
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 3.4, vertical: 2),
-        child: AnimatedContainer(
-          duration: const Duration(seconds: 1),
-          width: double.infinity,
-          height: 115,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(1),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+      leading: _buildVehicleImage(),
+      title: Text(
+        vehicle.name,
+        style: const TextStyle(fontSize: 14),
+      ),
+      trailing: _buildVehicleStatus(vehicle),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              _buildVehicleImageColumn(),
-              _buildVehicleInfoColumn(),
-              _buildVehicleStatusColumn(),
+              const Icon(
+                Icons.timer,
+                color: Colors.grey,
+              ),
+              const SizedBox(
+                width: 2,
+              ),
+              Text(vehicle.date),
             ],
+          ),
+          Row(
+            children: [
+              Text(vehicle.location),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildVehicleImage() {
+  return buildContainer(
+    const Image(
+      image: AssetImage('assets/icons/truck.png'),
+      width: 50,
+      height: 50,
+      fit: BoxFit.cover,
+    ),
+  );
+}
+
+Widget _buildVehicleInfo(Vehicle vehicle) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: Text(
+          vehicle.name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0),
+        ),
+      ),
+      Text(
+        vehicle.date,
+        style: const TextStyle(fontSize: 12.0, color: Colors.grey),
+      ),
+    ],
+  );
+}
+
+Widget _buildVehicleStatus(Vehicle vehicle) {
+  return Column(
+    children: [
+      Card(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.0),
+          decoration: BoxDecoration(
+            color: vehicle.status == 'En marche'
+                ? const Color(0xFF2FD56F)
+                : Colors.red,
+          ),
+          child: Text(
+            vehicle.status,
+            style: const TextStyle(color: Colors.white, fontSize: 12.0),
           ),
         ),
       ),
-    );
-  }
-
-  Column _buildVehicleImageColumn() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 15),
-          child: Container(
-            width: 55,
-            height: 55,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.black.withOpacity(0.1),
-                width: 2,
-              ),
-            ),
-            child: Image.asset(
-              'assets/icons/truck.png',
-            ),
-          ),
+      const SizedBox(height: 3.0),
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 1.0),
+        decoration: BoxDecoration(
+          color: vehicle.availability == 'En retard'
+              ? Colors.red
+              : const Color(0xFF2FD56F),
         ),
-        const SizedBox(height: 5),
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: Container(
-            width: 62,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 179, 178, 178),
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: Center(child: Text(vehicle['delay'])),
-          ),
+        child: Text(
+          vehicle.availability,
+          style: const TextStyle(color: Colors.white, fontSize: 12.0),
         ),
-      ],
-    );
-  }
-
-  Column _buildVehicleInfoColumn() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: Text(
-              vehicle['name'],
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 0),
-        Padding(
-          padding: const EdgeInsets.only(right: 40.0),
-          child: Row(
-            children: [
-              Icon(Icons.timelapse, color: Colors.grey[700]),
-              const SizedBox(width: 2),
-              Text(vehicle['date'], style: const TextStyle(fontSize: 13)),
-            ],
-          ),
-        ),
-        const SizedBox(height: 2),
-        Padding(
-          padding: const EdgeInsets.only(right: 30.0),
-          child: Row(
-            children: [
-              Icon(Icons.location_city, color: Colors.grey[700]),
-              const SizedBox(width: 2),
-              Text(vehicle['location']),
-            ],
-          ),
-        ),
-        const SizedBox(height: 0),
-        Padding(
-          padding: const EdgeInsets.only(right: 70, top: 0),
-          child: Container(
-            width: 93,
-            height: 25,
-            decoration: BoxDecoration(
-              color: vehicle['availability'] == 'En retard'
-                  ? Colors.red
-                  : const Color(0xFF2FD56F),
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: Center(child: Text(vehicle['availability'])),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Column _buildVehicleStatusColumn() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-          width: 77,
-          height: 20,
-          decoration: BoxDecoration(
-            color: vehicle['status'] == 'En marche'
-                ? const Color(0xFF2FD56F)
-                : Colors.red,
-            borderRadius: BorderRadius.circular(0),
-          ),
-          child: Center(child: Text(vehicle['status'])),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 0),
-          child: Container(
-            width: 50,
-            height: 25,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0153A5),
-              borderRadius: BorderRadius.circular(0),
-            ),
-            child: Center(
-              child: Text(
-                vehicle['battery'],
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }

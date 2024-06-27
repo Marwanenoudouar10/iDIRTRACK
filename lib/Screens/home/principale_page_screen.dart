@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:idirtrack/Screens/Abonnement/abonnements_screen.dart';
-import 'package:idirtrack/Screens/LastPositionScreen/last_position_screen.dart';
-import 'package:idirtrack/Screens/MaintenanceScreen/maintenance_impl.dart';
+import 'package:idirtrack/Screens/CommandScreen/commande_screen.dart';
+import 'package:idirtrack/Screens/MaintenanceScreen/maintenance_screen.dart';
 import 'package:idirtrack/Screens/Map/mapTest.dart';
+import 'package:idirtrack/Widgets/button_principale_screen.dart';
+import 'package:idirtrack/Screens/ListVehicleScreen/list_vehicles_screen.dart';
 import 'package:idirtrack/Widgets/logout_confirmation_dialog.dart';
-import 'package:idirtrack/Widgets/side_list.dart';
 import 'package:idirtrack/constant.dart';
-import 'package:idirtrack/Widgets/customized_button_principale.dart';
+import 'package:idirtrack/models/location.dart';
 
 class PrincipalePage extends StatefulWidget {
-  final String token;
-  final int userId;
+  final Location location;
 
-  const PrincipalePage({super.key, required this.token, required this.userId});
+  const PrincipalePage({super.key, required this.location});
 
   @override
-  // ignore: library_private_types_in_public_api
   _PrincipalePageState createState() => _PrincipalePageState();
 }
 
@@ -23,23 +22,22 @@ class _PrincipalePageState extends State<PrincipalePage> {
   void handleLogout(BuildContext context) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => LogoutConfirmationDialog(
+      builder: (context) => buildLogoutConfirmationDialog(
         onLogoutConfirmed: () {},
+        context: context,
       ),
     );
 
     if (confirmed == true) {
       if (!mounted) return;
       Navigator.pushNamedAndRemoveUntil(
-          // ignore: use_build_context_synchronously
-          context,
-          '/LoginScreen',
-          (Route<dynamic> route) => false);
+          context, '/LoginScreen', (Route<dynamic> route) => false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print('Loction id : ${widget.location.id}');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kMainColor,
@@ -79,20 +77,11 @@ class _PrincipalePageState extends State<PrincipalePage> {
             style: TextStyle(color: Colors.white, fontSize: 19),
           ),
         ),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const Drawer(child: SideListWidget())));
-            },
-            child: const Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 10.0),
+          child: Icon(
+            Icons.person,
+            color: Colors.white,
           ),
         ),
         elevation: 3.0,
@@ -114,29 +103,34 @@ class _PrincipalePageState extends State<PrincipalePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomizedButtonPrincipale(
+                      buildCustomizedButton(
+                        context: context,
                         imagePath: 'assets/icons/location.png',
-                        object: LastPositionScreen(
-                            token: widget.token, userId: widget.userId),
+                        object: Object,
                         pageName: 'Dernière Position',
                       ),
                       const SizedBox(width: 2),
-                      const CustomizedButtonPrincipale(
+                      buildCustomizedButton(
+                        context: context,
                         imagePath: 'assets/icons/distance.png',
-                        object: MyMap(),
+                        object: const MyMap(),
                         pageName: 'Historique',
                       ),
                       const SizedBox(width: 2),
-                      CustomizedButtonPrincipale(
+                      buildCustomizedButton(
+                        context: context,
                         imagePath: 'assets/icons/dashboard.png',
-                        object: LastPositionScreen(
-                            token: widget.token, userId: widget.userId),
+                        object: Object,
                         pageName: 'Rapports',
                       ),
                       const SizedBox(width: 2),
-                      const CustomizedButtonPrincipale(
+                      buildCustomizedButton(
+                        context: context,
                         imagePath: 'assets/icons/power.png',
-                        object: SubscriptionScreen(),
+                        object: ListCarsWidget(
+                          location: widget.location,
+                          object: const CommandeScreen(),
+                        ),
                         pageName: 'Commandes',
                       ),
                     ],
@@ -146,32 +140,37 @@ class _PrincipalePageState extends State<PrincipalePage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      CustomizedButtonPrincipale(
+                      buildCustomizedButton(
+                        context: context,
                         imagePath: 'assets/icons/maint.png',
-                        object: MaintenanceImpl(
-                            token: widget.token, userId: widget.userId),
+                        object: ListCarsWidget(
+                          location: widget.location,
+                          object: const MaintenanceScreen(),
+                        ),
                         pageName: 'Maintenance',
                       ),
                       const SizedBox(width: 2),
-                      const CustomizedButtonPrincipale(
+                      buildCustomizedButton(
+                        context: context,
                         imagePath: 'assets/icons/card.png',
                         object: SubscriptionScreen(
                           showSearchBar: true,
+                          location: widget.location,
                         ),
                         pageName: 'Abonnements',
                       ),
                       const SizedBox(width: 2),
-                      CustomizedButtonPrincipale(
+                      buildCustomizedButton(
+                        context: context,
                         imagePath: 'assets/icons/bell.png',
-                        object: LastPositionScreen(
-                            token: widget.token, userId: widget.userId),
+                        object: Object,
                         pageName: 'Notifications',
                       ),
                       const SizedBox(width: 2),
-                      CustomizedButtonPrincipale(
+                      buildCustomizedButton(
+                        context: context,
                         imagePath: 'assets/icons/settings.png',
-                        object: LastPositionScreen(
-                            token: widget.token, userId: widget.userId),
+                        object: Object(),
                         pageName: 'Paramètres',
                       ),
                     ],

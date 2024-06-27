@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
 
-class VerticalLine extends StatelessWidget {
-  final double height;
-  final Color color;
-  final double strokeWidth;
-
-  const VerticalLine({
-    super.key,
-    required this.height,
-    this.color = Colors.black,
-    this.strokeWidth = 2,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(strokeWidth, height),
-      painter: LinePainter(color: color, strokeWidth: strokeWidth),
-    );
-  }
+Widget verticalLine({
+  required double height,
+  Color color = Colors.black,
+  double strokeWidth = 2,
+}) {
+  return CustomPaint(
+    size: Size(strokeWidth, height),
+    painter: LinePainter(color: color, strokeWidth: strokeWidth),
+  );
 }
 
 class LinePainter extends CustomPainter {
@@ -47,40 +37,20 @@ class LinePainter extends CustomPainter {
   }
 }
 
-class VerticalLineList extends StatelessWidget {
-  final int count;
-  final double height;
-  final Color color;
-  final double strokeWidth;
-
-  const VerticalLineList({
-    super.key,
-    required this.count,
-    required this.height,
-    this.color = Colors.black,
-    this.strokeWidth = 2,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: List.generate(
-        count,
-        (index) => VerticalLine(
-          height: height,
-          color: color,
-          strokeWidth: strokeWidth,
-        ),
+Widget verticalLineList({
+  required int count,
+  required double height,
+  Color color = Colors.black,
+  double strokeWidth = 2,
+}) {
+  return Column(
+    children: List.generate(
+      count,
+      (index) => verticalLine(
+        height: height,
+        color: color,
+        strokeWidth: strokeWidth,
       ),
-    );
-  }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(title: const Text('Vertical Line List Example')),
-      body: const VerticalLineList(count: 5, height: 100, color: Colors.blue),
     ),
-  ));
+  );
 }

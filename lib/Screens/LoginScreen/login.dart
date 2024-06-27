@@ -1,58 +1,27 @@
-// main.dart
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:idirtrack/Screens/home/principale_page_screen.dart';
 import 'package:idirtrack/Widgets/button_widget.dart';
-import 'package:idirtrack/Widgets/server_utilisateur_switches.dart';
+import 'package:idirtrack/Widgets/server_switch_user.dart';
 import 'package:idirtrack/Widgets/vertical_line.dart';
-import 'package:idirtrack/configs/auth_service.dart';
 import 'package:idirtrack/constant.dart';
 import 'package:idirtrack/global/global_state.dart';
+import 'package:idirtrack/providers/sing_in_provider.dart';
+import 'package:idirtrack/providers/vehicle_provider.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  bool _isVisible = false;
-  bool _obscureText = true;
-  bool _hasError = false;
-  late TextEditingController usernameController;
-  late TextEditingController passwordController;
-
-  @override
-  void initState() {
-    super.initState();
-    usernameController = TextEditingController();
-    passwordController = TextEditingController();
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        _isVisible = true;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<LoginProvider>(context);
+    loginProvider.initializeVisibility();
+
     return Scaffold(
       backgroundColor: kLoginScreenColor,
       body: AnimatedOpacity(
         duration: const Duration(milliseconds: 900),
-        opacity: _isVisible ? 1.0 : 0.0,
+        opacity: loginProvider.isVisible ? 1.0 : 0.0,
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -68,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: TextField(
                     style: const TextStyle(color: Colors.white),
-                    controller: usernameController,
+                    controller: loginProvider.usernameController,
                     decoration: InputDecoration(
                       fillColor: kInputsColor,
                       filled: true,
@@ -80,7 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: _hasError ? Colors.red : kIconColor,
+                          color:
+                              loginProvider.hasError ? Colors.red : kIconColor,
                         ),
                         borderRadius: BorderRadius.circular(3.0),
                       ),
@@ -91,8 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: TextField(
-                    controller: passwordController,
-                    obscureText: _obscureText,
+                    controller: loginProvider.passwordController,
+                    obscureText: loginProvider.obscureText,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       filled: true,
@@ -102,23 +72,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       prefixIcon: const Icon(Icons.lock, color: kIconColor),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureText
+                          loginProvider.obscureText
                               ? Icons.visibility_off
                               : Icons.visibility,
                         ),
                         color: kIconColor,
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
+                        onPressed: loginProvider.toggleVisibility,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(3.0),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: _hasError ? Colors.red : kIconColor,
+                          color:
+                              loginProvider.hasError ? Colors.red : kIconColor,
                         ),
                         borderRadius: BorderRadius.circular(3.0),
                       ),
@@ -126,53 +93,37 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 18),
-                const SwitchTypes(),
+                buildSwitchTypes(context),
                 const SizedBox(height: 18),
-                CustomizeButton(
+                buildCustomizeButton(
                   label: "CONNEXION",
                   onPressed: () async {
-                    String username = usernameController.text;
-                    String password = passwordController.text;
-                    try {
-                      final authService = AuthService();
-                      final authData =
-                          await authService.authenticate(username, password);
-                      if (authData.containsKey('token') &&
-                          authData.containsKey('userId')) {
-                        final token = authData['token']!;
-                        final userId = authData['userId']!;
+                    final location = await loginProvider.authenticate(context);
+                    if (location != null) {
+                      Provider.of<GlobalState>(context, listen: false)
+                          .setLocation(location);
 
-                        Provider.of<GlobalState>(context, listen: false)
-                            .setToken(token);
-                        Provider.of<GlobalState>(context, listen: false)
-                            .setUserId(userId);
-
-                        if (!mounted) return;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                PrincipalePage(token: token, userId: userId),
+                      if (!context.mounted) return;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider(
+                                create: (_) =>
+                                    VehicleProvider(location.id as int),
+                              ),
+                            ],
+                            child: PrincipalePage(location: location),
                           ),
-                        );
-                      } else {
-                        setState(() {
-                          _hasError = true;
-                        });
-                      }
-                    } catch (e) {
-                      if (kDebugMode) {
-                        print('Failed to authenticate: $e');
-                      }
-                      setState(() {
-                        _hasError = true;
-                      });
+                        ),
+                      );
                     }
                   },
                   buttonColor: kButtonColor,
                   borderExist: false,
                 ),
-                if (_hasError)
+                if (loginProvider.hasError)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
@@ -181,29 +132,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 const SizedBox(height: 30),
-                const Padding(
-                  padding: EdgeInsets.only(left: 14),
+                Padding(
+                  padding: const EdgeInsets.only(left: 14),
                   child: Row(
                     children: [
-                      VerticalLine(
+                      verticalLine(
                         height: 2,
                         strokeWidth: 158,
                         color: Colors.white,
                       ),
-                      SizedBox(width: 10),
-                      Text('OU',
+                      const SizedBox(width: 10),
+                      const Text('OU',
                           style: TextStyle(color: Colors.white, fontSize: 19)),
-                      SizedBox(width: 10),
-                      VerticalLine(
-                        height: 2,
-                        strokeWidth: 158,
-                        color: Colors.white,
-                      ),
+                      const SizedBox(width: 10),
+                      verticalLine(
+                          height: 2, strokeWidth: 158, color: Colors.white),
                     ],
                   ),
                 ),
                 const SizedBox(height: 30),
-                CustomizeButton(
+                buildCustomizeButton(
                   label: "CONTACTER LE SUPPORT",
                   onPressed: () {
                     Navigator.pushNamed(context, '/');
