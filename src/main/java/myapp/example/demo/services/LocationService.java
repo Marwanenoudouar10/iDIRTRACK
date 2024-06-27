@@ -80,7 +80,7 @@ public class LocationService {
         vehicleRepository.deleteById(vehicleId);
     }
 
-    public Long getUserIdByUsername(String username) {
+    public Long getLocationIdByUsername(String username) {
         try {
             Location location = locationRepository.findByUsername(username);
             if (location != null) {
@@ -92,4 +92,8 @@ public class LocationService {
             return null;
         }
     }
+    public Location getLocationByUsername(String username) {
+        return locationRepository.findByUsername(username);
+    }
+
 }

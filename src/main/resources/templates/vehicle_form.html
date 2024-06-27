@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vehicle Form</title>
+  <style>
+    .error {
+      border-color: red;
+      background-color: #f5ebeb;
+    }
+  </style>
+  <script>
+    async function submitForm(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Flag to track valid form data
+      let isValid = true;
+
+      // Collect form data and perform basic validation
+      const formData = {
+        make: document.getElementById('make').value.trim(), // Trim leading/trailing spaces
+        model: document.getElementById('model').value.trim(),
+        name: document.getElementById('name').value.trim(),
+        date: document.getElementById('date').value.trim(),
+        location: document.getElementById('location').value.trim(),
+        status: document.getElementById('status').value.trim(),
+        battery: document.getElementById('battery').value.trim(),
+        delay: document.getElementById('delay').value.trim(),
+        repairStatus: document.getElementById('repairStatus').value.trim(),
+        availability: document.getElementById('availability').value.trim(),
+        locationId: document.getElementById('locationId').value.trim(),
+      };
+
+      const requiredFields = ['make', 'model', 'name', 'date', 'location', 'status', 'battery', 'delay', 'repairStatus', 'availability', 'locationId'];
+      for (const field of requiredFields) {
+        if (!formData[field]) {
+          // Mark field as invalid and display error message
+          document.getElementById(field).classList.add('error');
+          isValid = false;
+        } else {
+          document.getElementById(field).classList.remove('error');
+        }
+      }
+
+      if (isValid) {
+        const submitButton = document.getElementById('submitButton');
+        const originalButtonText = submitButton.innerText;
+
+        try {
+          submitButton.innerText = 'Submitting...';
+          submitButton.disabled = true;
+
+          const response = await fetch(`http://192.168.1.10:8081/api/locations/${formData.locationId}/vehicles`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+
+          if (response.ok) {
+            // Handle success
+            submitButton.innerText = originalButtonText;
+            submitButton.disabled = false;
+            alert('Vehicle details have been saved successfully.');
+            document.getElementById('vehicleForm').reset(); // Reset form on success
+          } else {
+            // Handle error
+            const errorText = await response.text();
+            submitButton.innerText = originalButtonText;
+            submitButton.disabled = false;
+            alert('Error: ' + errorText);
+          }
+        } catch (error) {
+          submitButton.innerText = originalButtonText;
+          submitButton.disabled = false;
+          alert('Error: ' + error.message);
+        }
+      } else {
+        alert('Please fix the highlighted errors before submitting.');
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Vehicle Form</h1>
+  <form id="vehicleForm" onsubmit="submitForm(event)">
+    <div>
+      <label for="make">Make:</label>
+      <input type="text" id="make" name="make" required />
+    </div>
+    <div>
+      <label for="model">Model:</label>
+      <input type="text" id="model" name="model" required />
+    </div>
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+    </div>
+    <div>
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required />
+    </div>
+    <div>
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" required />
+    </div>
+    <div>
+      <label for="status">Status:</label>
+      <input type="text" id="status" name="status" required />
+    </div>
+    <div>
+      <label for="battery">Battery:</label>
+      <input type="text" id="battery" name="battery" required />
+    </div>
+    <div>
+      <label for="delay">Delay:</label>
+      <input type="text" id="delay" name="delay" required />
+    </div>
+    <div>
+      <label for="repairStatus">Repair Status:</label>
+      <input type="text" id="repairStatus" name="repairStatus" required />
+    </div>
+    <div>
+      <label for="availability">Availability:</label>
+      <input type="text" id="availability" name="availability" required />
+    </div>
+    <div>
+      <label for="locationId">Location ID:</label>
+      <input type="text" id="locationId" name="locationId" required />
+    </div>
+    <div>
+      <button type="submit" id="submitButton">Submit</button>
+    </div>
+  </form>
+</body>
+</html>
